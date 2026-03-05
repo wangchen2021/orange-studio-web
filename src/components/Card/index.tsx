@@ -4,7 +4,8 @@ import styles from './index.scss';
 interface CardProps {
   icon: string;
   title: string;
-  description: string;
+  description?: string;
+  link?: string;
   color: string;
   gradient: string;
   pointerEvents?: () => void;
@@ -17,6 +18,7 @@ const Card: React.FC<CardProps> = ({
   color,
   gradient,
   pointerEvents,
+  link,
 }) => {
   return (
     <div
@@ -33,6 +35,11 @@ const Card: React.FC<CardProps> = ({
       <div className={styles.cardIcon}>{icon}</div>
       <h3 className={styles.cardTitle}>{title}</h3>
       <p className={styles.cardDescription}>{description}</p>
+      {link && (
+        <a href={link} target="_blank" className={styles.cardLink}>
+          {link}
+        </a>
+      )}
       <div className={styles.cardHoverEffect} />
     </div>
   );

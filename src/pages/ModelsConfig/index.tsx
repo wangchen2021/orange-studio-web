@@ -3,61 +3,70 @@ import Navbar from '@/components/Navbar';
 import styles from './index.scss';
 import Card from '@/components/Card';
 
-const ModelsConfig:React.FC = () => {
-  const [particles, setParticles] = useState<Array<{x: number, y: number, size: number, speed: number}>>([]);
-  
-  // 初始化粒子
-  useEffect(() => {
-    const newParticles = [];
-    for (let i = 0; i < 50; i++) {
-      newParticles.push({
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 3 + 1,
-        speed: Math.random() * 0.5 + 0.2
-      });
-    }
-    setParticles(newParticles);
-  }, []);
-  
+interface Particle {
+  x: number;
+  y: number;
+  size: number;
+  speed: number;
+}
+
+const initParticles = () => {
+  const newParticles: Array<Particle> = [];
+  for (let i = 0; i < 50; i++) {
+    newParticles.push({
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 3 + 1,
+      speed: Math.random() * 0.5 + 0.2,
+    });
+  }
+  return newParticles;
+};
+
+const ModelsConfig: React.FC = () => {
+  const [particles, setParticles] = useState<Array<Particle>>(initParticles());
   // 粒子动画
   useEffect(() => {
     const interval = setInterval(() => {
-      setParticles(prev => prev.map(p => ({
-        ...p,
-        y: (p.y + p.speed) % 100
-      })));
+      setParticles((prev) =>
+        prev.map((p) => ({
+          ...p,
+          y: (p.y + p.speed) % 100,
+        })),
+      );
     }, 50);
-    
+
     return () => clearInterval(interval);
   }, []);
-  
+
   const features = [
     {
       icon: '🤖',
       title: 'DeepSeek',
-      description: '集成GPT、Claude、文心一言等主流AI模型，智能调度最优模型组合',
+      description: 'https://platform.deepseek.com',
+      link: 'https://platform.deepseek.com',
       color: '#00d4ff',
-      gradient: 'linear-gradient(135deg, #00d4ff, #0099ff)'
+      gradient: 'linear-gradient(135deg, #00d4ff, #0099ff)',
     },
     {
       icon: '🚀',
-      title: '智能产品孵化',
+      title: '豆包',
       description: '从创意到产品的完整工作流，自动化生成原型、设计和代码',
+      link: 'https://console.volcengine.com/home',
       color: '#9d4edd',
-      gradient: 'linear-gradient(135deg, #9d4edd, #560bad)'
+      gradient: 'linear-gradient(135deg, #9d4edd, #560bad)',
     },
   ];
-  
+
   return (
     <div className={styles.container}>
       {/* 导航栏 */}
       <Navbar />
-      
+
       {/* 背景粒子 */}
       <div className={styles.particleBackground}>
         {particles.map((p, i) => (
-          <div 
+          <div
             key={i}
             className={styles.particle}
             style={{
@@ -65,7 +74,7 @@ const ModelsConfig:React.FC = () => {
               top: `${p.y}%`,
               width: p.size,
               height: p.size,
-              animationDelay: `${i * 0.1}s`
+              animationDelay: `${i * 0.1}s`,
             }}
           />
         ))}
@@ -80,7 +89,7 @@ const ModelsConfig:React.FC = () => {
             集成了最先进的AI技术和产品开发工具，为您提供全方位的智能支持
           </p>
         </div>
-        
+
         <div className={styles.featuresGrid}>
           {features.map((feature, index) => (
             <Card
@@ -90,11 +99,12 @@ const ModelsConfig:React.FC = () => {
               description={feature.description}
               color={feature.color}
               gradient={feature.gradient}
+              link={feature.link}
             />
           ))}
         </div>
       </section>
-      
+
       {/* 页脚 */}
       <footer className={styles.footer}>
         <div className={styles.footerContent}>
@@ -103,7 +113,7 @@ const ModelsConfig:React.FC = () => {
             <div className={styles.logoText}>Orange Studio</div>
             <div className={styles.logoSubtitle}>智能产品孵化平台</div>
           </div>
-          
+
           <div className={styles.footerLinks}>
             <div className={styles.linkGroup}>
               <h4>产品</h4>
@@ -128,16 +138,22 @@ const ModelsConfig:React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className={styles.footerBottom}>
-          <div className={styles.copyright}>
-            © 2024 Orange Studio. 保留所有权利。
-          </div>
+          <div className={styles.copyright}>© 2024 Orange Studio. 保留所有权利。</div>
           <div className={styles.socialLinks}>
-            <a href="#" className={styles.socialLink}>GitHub</a>
-            <a href="#" className={styles.socialLink}>Twitter</a>
-            <a href="#" className={styles.socialLink}>Discord</a>
-            <a href="#" className={styles.socialLink}>LinkedIn</a>
+            <a href="#" className={styles.socialLink}>
+              GitHub
+            </a>
+            <a href="#" className={styles.socialLink}>
+              Twitter
+            </a>
+            <a href="#" className={styles.socialLink}>
+              Discord
+            </a>
+            <a href="#" className={styles.socialLink}>
+              LinkedIn
+            </a>
           </div>
         </div>
       </footer>
